@@ -459,7 +459,16 @@
       quoteCard.classList.add("is-changing");
       window.setTimeout(draw, 175);
     } else {
+      // First paint only: play the entrance animation via its own class,
+      // then remove it so it can never be re-triggered by a later
+      // is-changing toggle (that was the cause of the flash-on-every-click bug).
       draw();
+      quoteCard.classList.add("is-entering");
+      quoteCard.addEventListener(
+        "animationend",
+        () => quoteCard.classList.remove("is-entering"),
+        { once: true }
+      );
     }
   }
 
