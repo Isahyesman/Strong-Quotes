@@ -159,6 +159,12 @@ button{font-family:inherit;}
   -webkit-backdrop-filter:blur(18px);
   box-shadow: 0 20px 60px -25px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.02) inset;
   transition:border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+  opacity:1; transform:translateY(0) scale(1);
+}
+/* One-time entrance on first paint only — this class is added once by JS
+   and removed after it finishes, so it can never re-fire from a later
+   class toggle (that was the cause of the flash on every "Next Verse"). */
+.quote-card.is-entering{
   opacity:0; transform:translateY(14px) scale(.985);
   animation: cardIn .7s var(--ease) forwards;
 }
