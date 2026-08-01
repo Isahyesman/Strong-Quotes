@@ -162,25 +162,30 @@ button{font-family:inherit;}
   opacity:1; transform:translateY(0) scale(1);
 }
 /* One-time entrance on first paint only — this class is added once by JS
-   and removed after it finishes, so it can never re-fire from a later
-   class toggle (that was the cause of the flash on every "Next Verse"). */
+   and removed after it finishes, so it can never re-fire later. */
 .quote-card.is-entering{
   opacity:0; transform:translateY(14px) scale(.985);
   animation: cardIn .7s var(--ease) forwards;
 }
 @keyframes cardIn{ to{ opacity:1; transform:translateY(0) scale(1); } }
-.quote-card.is-changing{ animation: cardSwap .5s var(--ease); }
-@keyframes cardSwap{
-  0%{ opacity:1; transform:translateY(0); }
-  35%{ opacity:0; transform:translateY(-8px); }
-  36%{ transform:translateY(8px); }
-  100%{ opacity:1; transform:translateY(0); }
+
+/* Quote changes: the CARD itself stays put (no more full fade-to-invisible,
+   which read as a "flash"). Only the text content gently crossfades. */
+.quote-glyph, .quote-text, .quote-meta{
+  transition: opacity .32s var(--ease), transform .32s var(--ease);
+  opacity:1; transform:translateY(0);
+}
+.quote-card.is-swapping .quote-glyph,
+.quote-card.is-swapping .quote-text,
+.quote-card.is-swapping .quote-meta{
+  opacity:0; transform:translateY(6px);
 }
 
 .quote-glyph{
   position:absolute; top:6px; left:26px; font-family:var(--font-display);
   font-size:80px; color:var(--accent); opacity:.35; line-height:1; user-select:none;
 }
+.quote-card.is-swapping .quote-glyph{ opacity:0; }
 .quote-text{
   font-family:var(--font-display);
   font-weight:500; font-style:italic;
