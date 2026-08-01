@@ -453,15 +453,18 @@
       updateFavButton();
     };
     if (animate) {
-      quoteCard.classList.remove("is-changing");
-      // force reflow so the animation can restart
-      void quoteCard.offsetWidth;
-      quoteCard.classList.add("is-changing");
-      window.setTimeout(draw, 175);
+      // Fade the text out, swap it while invisible, fade back in.
+      // Plain transition + class toggle — no animation-restart tricks,
+      // and the card itself never goes fully invisible.
+      quoteCard.classList.add("is-swapping");
+      window.setTimeout(() => {
+        draw();
+        quoteCard.classList.remove("is-swapping");
+      }, 320);
     } else {
       // First paint only: play the entrance animation via its own class,
       // then remove it so it can never be re-triggered by a later
-      // is-changing toggle (that was the cause of the flash-on-every-click bug).
+      // is-swapping toggle.
       draw();
       quoteCard.classList.add("is-entering");
       quoteCard.addEventListener(
